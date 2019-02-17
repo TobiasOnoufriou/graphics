@@ -1,4 +1,6 @@
 #include "Game.h"
+#include <glm.hpp>
+
 Game::Game() {
 	opengl_setup(800, 600);
 }
@@ -48,15 +50,20 @@ void Game::opengl_setup(int width, int height) {
 
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
 
 
 	std::string vertexShaderSource;
 	std::string fragmentShaderSource;
+	std::string geometryShaderSource;
 	if (!loadShaderSource("vertex.vs", vertexShaderSource)) {
 		std::cout << "Could not find vertex shader" << std::endl;
 	}
 	if (!loadShaderSource("fragment.fs", fragmentShaderSource)) {
 		std::cout << "Could not find fragment shader" << std::endl;
+	}
+	if (!loadShaderSource("geometryShader.gs", geometryShaderSource)) {
+		std::cout << "Could not find geometry shader" << std::endl;
 	}
 	const char *vertexSource = vertexShaderSource.c_str();
 	glShaderSource(vertexShader, 1, &vertexSource , NULL);
@@ -76,37 +83,63 @@ void Game::opengl_setup(int width, int height) {
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
 	if (!success)
 	{
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
 	}
 	shaderProgram = glCreateProgram();
 
+
+	const char* geometrySource = geometryShaderSource.c_str();
+	glShaderSource(geometryShader, 1, &geometrySource, NULL);
+	glCompileShader(geometryShader);
+	glGetShaderiv(geometryShader, GL_COMPILE_STATUS, &success);
+	if (!success) {
+		glGetShaderInfoLog(geometryShader, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::GEOMETRY::COMPILATION_FAILED\n" << infoLog << std::endl;
+	}
+
 	glAttachShader(shaderProgram, vertexShader);
 	glAttachShader(shaderProgram, fragmentShader);
+	glAttachShader(shaderProgram, geometryShader);
 	glLinkProgram(shaderProgram);
 	
-	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f,
-		0.0f, 0.5f, 0.0f
+
+	planeSetup();
+	
+}
+
+void Game::planeSetup() {
+	glm::mat4 view = glm::mat4(1.0f);
+	
+	GLfloat plane[] = {
+		-0.5f, -0.3f, 0.0f,
+		0.5f, -0.2f, 0.0f,
+		1.f, 0.5f, 0.0f,
+		0.5f, 0.5f, 0.0f
 	};
 
-	glGenVertexArrays(1, &vao);
-	glGenBuffers(1, &vbo);
 	
+	
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(plane), plane, GL_STATIC_DRAW);
+	
+	
+	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	GLint postAttrib = glGetAttribLocation(shaderProgram, "pos");
+	glEnableVertexAttribArray(postAttrib);
+	glVertexAttribPointer(postAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	
 	glEnableVertexAttribArray(0);
+
+
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glBindVertexArray(0);
-
-	//glfwSetKeyCallback(this->window, this->key_callback);
+	
 }
 bool Game::loadShaderSource(const std::string& filename, std::string& out) {
 	std::ifstream file;
@@ -128,19 +161,34 @@ void Game::processInput(GLFWwindow* window) {
 }
 void Game::game_loop() {
 	
+	float currentFrame = glfwGetTime();
+	//lastFrame = currentFrame;
+	float deltaTime = currentFrame - lastFrame;
+	
 	this->processInput(window);
 
+	
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	
 	
+
+
+	GLint loc = glGetUniformLocation(geometryShader, "u_time");
+	lastFrame += 0.0000001;
+	glUniform1f(loc, lastFrame);
+	
+	
+
 	glUseProgram(shaderProgram);
 	
 	glBindVertexArray(vao);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawArrays(GL_POINTS, 0, 4);
 
 	
 	glfwSwapBuffers(window);
 	glfwPollEvents();
+	
+	
 }
 

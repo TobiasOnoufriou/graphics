@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\space\Source\Repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\glad\KHR;C:\Users\Tobias Onoufriou\source\repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\glad\KHR;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\space\Source\Repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\glad\KHR;C:\Users\Tobias Onoufriou\source\repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\glad\KHR;C:\Users\Tobias Onoufriou\source\repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\glm;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>

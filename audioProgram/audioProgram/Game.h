@@ -9,12 +9,15 @@
 class Game {
 private:
 	GLFWwindow* window;
+	
 	GLenum res;
 	GLuint vbo;
 	GLuint vao;
 	GLuint vertexShader;
 	GLuint fragmentShader;
 	GLuint shaderProgram;
+	GLuint geometryShader;
+	float lastFrame;
 
 public:
 	Game();
@@ -24,6 +27,7 @@ public:
 	void error_callback(int error, const char* description);
 	void processInput(GLFWwindow* window);
 	void game_loop();
+	void planeSetup();
 
 	//Mutator
 	GLFWwindow* getWindow() {
