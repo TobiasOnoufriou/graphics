@@ -20,6 +20,43 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
 }
+
+void Game::creating_plane() {
+	//int plane_size = 512;
+	GLfloat plane_vertices[] = {
+		-1.0f, 1.0f, 0.0f,
+		1.0f, 1.0f, 0.0f,
+		-1.0f, -1.0f, 0.0f,
+		1.0f, -1.0f, 0.0f
+	};
+	this->plane_verticies_indicies = {
+		0,
+	};
+
+
+
+	glGenVertexArrays(1, &vao);
+	glGenBuffers(1, &vbo);
+	glGenBuffers(1, &ebo);
+
+	glBindVertexArray(vao);
+
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->plane_verticies_indicies.size() * sizeof(unsigned int), &this->plane_verticies_indicies[0], GL_STATIC_DRAW);
+	//glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(plane_vertices), plane_vertices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindVertexArray(0);
+	
+}
+
+
 void Game::opengl_setup(int width, int height) {
 
 
@@ -69,7 +106,7 @@ void Game::opengl_setup(int width, int height) {
 		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
 	}
-	
+	//glm::mat4 = glm::translate();
 	const char* fragmentSource = fragmentShaderSource.c_str();
 	glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
 	glCompileShader(fragmentShader);
@@ -91,20 +128,9 @@ void Game::opengl_setup(int width, int height) {
 		0.0f, 0.5f, 0.0f
 	};
 
-	glGenVertexArrays(1, &vao);
-	glGenBuffers(1, &vbo);
-	
-	glBindVertexArray(vao);
+	/**/
 
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glBindVertexArray(0);
+	creating_plane();
 
 	//glfwSetKeyCallback(this->window, this->key_callback);
 }
@@ -137,7 +163,10 @@ void Game::game_loop() {
 	glUseProgram(shaderProgram);
 	
 	glBindVertexArray(vao);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawElements(GL_TRIANGLES,
+		this->plane_verticies_indicies.size(),
+		GL_UNSIGNED_INT,
+		(void*)0);
 
 	
 	glfwSwapBuffers(window);

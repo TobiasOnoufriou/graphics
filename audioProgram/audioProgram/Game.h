@@ -5,6 +5,10 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
+#include "glm\mat4x4.hpp"
+#include "glm/matrix.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 class Game {
 private:
@@ -12,9 +16,12 @@ private:
 	GLenum res;
 	GLuint vbo;
 	GLuint vao;
+	GLuint ebo;
 	GLuint vertexShader;
 	GLuint fragmentShader;
 	GLuint shaderProgram;
+	GLfloat plane_vertices[9];
+	std::vector<unsigned int> plane_verticies_indicies;
 
 public:
 	Game();
@@ -23,6 +30,7 @@ public:
 	void opengl_setup(int width, int height);
 	void error_callback(int error, const char* description);
 	void processInput(GLFWwindow* window);
+	void creating_plane();
 	void game_loop();
 
 	//Mutator
