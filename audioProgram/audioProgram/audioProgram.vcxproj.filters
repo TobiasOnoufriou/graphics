@@ -18,6 +18,9 @@
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="shaderLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>

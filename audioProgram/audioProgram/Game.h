@@ -1,7 +1,11 @@
-#pragma once
+#define STB_IMAGE_STATIC
+#define STB_IMAGE_IMPLEMENTATION
 
-
+#include "glm\glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 #include "shaderLoader.h"
+#include "stb_image.h"
 #include "glad/glad.h"
 #include "glfw/include/GLFW/glfw3.h"
 #include <fstream>
@@ -12,7 +16,7 @@
 class Game {
 private:
 	GLFWwindow* window;
-	
+
 	GLenum res;
 	GLuint vbo;
 	GLuint vao;
@@ -20,10 +24,14 @@ private:
 	GLuint fragmentShader;
 	GLuint shaderProgram;
 	GLuint geometryShader;
-	GLuint geometeryProgram;
+	unsigned int texture1,texture2;
+	glm::mat4 proj, model, view;
+	glm::vec3 cameraPos, cameraFront, cameraUp; //= glm::vec3(0.0f, 0.0f, 3.0f);
+	//= glm::vec3(0.0f, 0.0f, -1.0f);
 	float lastFrame;
-	shaderLoader basicShader;
 
+	shaderLoader basicShader;
+	shaderLoader lampShader;
 public:
 	Game();
 	~Game();
