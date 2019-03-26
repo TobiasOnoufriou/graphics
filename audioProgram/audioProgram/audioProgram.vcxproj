@@ -170,6 +170,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="shaderLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="audioProgram.cpp" />

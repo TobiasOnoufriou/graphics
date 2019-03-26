@@ -1,4 +1,7 @@
 #pragma once
+
+
+#include "shaderLoader.h"
 #include "glad/glad.h"
 #include "glfw/include/GLFW/glfw3.h"
 #include <fstream>
@@ -17,7 +20,9 @@ private:
 	GLuint fragmentShader;
 	GLuint shaderProgram;
 	GLuint geometryShader;
+	GLuint geometeryProgram;
 	float lastFrame;
+	shaderLoader basicShader;
 
 public:
 	Game();

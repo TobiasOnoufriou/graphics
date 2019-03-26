@@ -1,10 +1,10 @@
 #include "Game.h"
-#include <glm.hpp>
-
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 Game::Game() {
 	opengl_setup(800, 600);
 }
-
 Game::~Game() {
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
@@ -47,101 +47,66 @@ void Game::opengl_setup(int width, int height) {
 		exit(EXIT_FAILURE);
 	}
 
+	basicShader.loadShader("vertex.vs", 'V');
+	basicShader.loadShader("fragment.fs", 'F');
 
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
-
-
-	std::string vertexShaderSource;
-	std::string fragmentShaderSource;
-	std::string geometryShaderSource;
-	if (!loadShaderSource("vertex.vs", vertexShaderSource)) {
-		std::cout << "Could not find vertex shader" << std::endl;
-	}
-	if (!loadShaderSource("fragment.fs", fragmentShaderSource)) {
-		std::cout << "Could not find fragment shader" << std::endl;
-	}
-	if (!loadShaderSource("geometryShader.gs", geometryShaderSource)) {
-		std::cout << "Could not find geometry shader" << std::endl;
-	}
-	const char *vertexSource = vertexShaderSource.c_str();
-	glShaderSource(vertexShader, 1, &vertexSource , NULL);
-	glCompileShader(vertexShader);
-	int success;
-	char infoLog[512];
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-	
-	const char* fragmentSource = fragmentShaderSource.c_str();
-	glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
-	glCompileShader(fragmentShader);
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-	shaderProgram = glCreateProgram();
-
-
-	const char* geometrySource = geometryShaderSource.c_str();
-	glShaderSource(geometryShader, 1, &geometrySource, NULL);
-	glCompileShader(geometryShader);
-	glGetShaderiv(geometryShader, GL_COMPILE_STATUS, &success);
-	if (!success) {
-		glGetShaderInfoLog(geometryShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::GEOMETRY::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glAttachShader(shaderProgram, geometryShader);
-	glLinkProgram(shaderProgram);
-	
+	basicShader.compileShader();
 
 	planeSetup();
 	
 }
 
 void Game::planeSetup() {
-	glm::mat4 view = glm::mat4(1.0f);
-	
-	GLfloat plane[] = {
-		-0.5f, -0.3f, 0.0f,
-		0.5f, -0.2f, 0.0f,
-		1.f, 0.5f, 0.0f,
-		0.5f, 0.5f, 0.0f
-	};
 
 	
+	float vertices[] = {
+		-0.5f, -0.5f, 0.0f,
+		0.5f, -0.5f, 0.0f,
+		0.0f,  0.5f, 0.0f
+	};
+	/*GLfloat texCoords[] = {
+		0.0f, 0.0f, 0.0f,
+		1.0f, 0.0f, 0.0f,
+		0.5f, 1.0f, 0.0f
+	};*/
+
+	/*int width, height, nrChannels;
+	unsigned char *data = stbi_load("wall.jpg", &width, &height, &nrChannels, 0);
 	
+	unsigned int texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	
+	stbi_image_free(data);*/
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(plane), plane, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	
 	
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
-	GLint postAttrib = glGetAttribLocation(shaderProgram, "pos");
-	glEnableVertexAttribArray(postAttrib);
-	glVertexAttribPointer(postAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	/*GLint postAttrib = glGetAttribLocation(shaderProgram, "pos");
+	glEnableVertexAttribArray(postAttrib);*/
+
+
 	
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
 
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
 	glBindVertexArray(0);
 	
 }
-bool Game::loadShaderSource(const std::string& filename, std::string& out) {
+/*bool Game::loadShaderSource(const std::string& filename, std::string& out) {
 	std::ifstream file;
 	file.open(filename.c_str());
 	if (!file) {
@@ -152,8 +117,7 @@ bool Game::loadShaderSource(const std::string& filename, std::string& out) {
 	file.close();
 	out = stream.str();
 	return true;
-}
-
+}*/
 void Game::processInput(GLFWwindow* window) {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
@@ -167,24 +131,20 @@ void Game::game_loop() {
 	
 	this->processInput(window);
 
-	
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	
-
-
-	GLint loc = glGetUniformLocation(geometryShader, "u_time");
+	/*GLint loc = glGetUniformLocation(geometryShader, "u_time");
 	lastFrame += 0.0000001;
-	glUniform1f(loc, lastFrame);
-	
-	
-
-	glUseProgram(shaderProgram);
+	glUniform1f(loc, lastFrame);*/
 	
 	glBindVertexArray(vao);
-	glDrawArrays(GL_POINTS, 0, 4);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 
+
+	glm::vec4 newColor(0.4f, 0.5f, 0.3f, 1.0f);
+	glUniform3f(glGetUniformLocation(basicShader.getShaderProgram(), "newColor"), newColor.x, newColor.y, newColor.z);
+	glUseProgram(basicShader.getShaderProgram());
 	
 	glfwSwapBuffers(window);
 	glfwPollEvents();
