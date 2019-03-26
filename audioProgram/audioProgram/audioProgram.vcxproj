@@ -76,7 +76,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\space\Source\Repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\glad\KHR;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\space\Source\Repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\glad\KHR;C:\Users\Tobias Onoufriou\source\repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\glad\KHR;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -96,7 +96,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Users\space\Source\Repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\glew\GL;C:\Users\space\Source\Repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\glfw\include;C:\Users\space\Source\Repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\fmod\lowlevel\inc;C:\Users\space\Source\Repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\fmod\studio\inc;C:\Users\space\Source\Repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\glm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\space\Source\Repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\glew\GL;C:\Users\space\Source\Repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\glfw\include;C:\Users\space\Source\Repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\fmod\lowlevel\inc;C:\Users\space\Source\Repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\fmod\studio\inc;C:\Users\space\Source\Repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\glm;C:\Users\Tobias Onoufriou\source\repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\glew\GL;C:\Users\Tobias Onoufriou\source\repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\glfw\include;C:\Users\Tobias Onoufriou\source\repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\fmod\lowlevel\inc;C:\Users\Tobias Onoufriou\source\repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\fmod\studio\inc;C:\Users\Tobias Onoufriou\source\repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\glm</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -115,7 +115,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Users\space\Source\Repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\fmod\lowlevel\inc;C:\Users\space\Source\Repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\fmod\studio\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\space\Source\Repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\fmod\lowlevel\inc;C:\Users\space\Source\Repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\fmod\studio\inc;C:\Users\Tobias Onoufriou\source\repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\fmod\lowlevel\inc;C:\Users\Tobias Onoufriou\source\repos\TobiasOnoufriou\graphics\audioProgram\audioProgram\fmod\studio\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

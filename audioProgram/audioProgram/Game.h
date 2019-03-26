@@ -19,7 +19,7 @@ private:
 
 	GLenum res;
 	GLuint vbo;
-	GLuint vao;
+	GLuint cubeVao, lightVao;
 	GLuint vertexShader;
 	GLuint fragmentShader;
 	GLuint shaderProgram;
@@ -38,7 +38,7 @@ public:
 	bool loadShaderSource(const std::string& filename, std::string& out);
 	void opengl_setup(int width, int height);
 	void error_callback(int error, const char* description);
-	void processInput(GLFWwindow* window);
+	void processInput(GLFWwindow* window, float deltaTime);
 	void game_loop();
 	void planeSetup();
 
