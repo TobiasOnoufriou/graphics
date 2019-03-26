@@ -1,28 +1,37 @@
-#pragma once
+#define STB_IMAGE_STATIC
+#define STB_IMAGE_IMPLEMENTATION
+
+#include "glm\glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+#include "shaderLoader.h"
+#include "stb_image.h"
 #include "glad/glad.h"
 #include "glfw/include/GLFW/glfw3.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <vector>
-#include "glm\mat4x4.hpp"
-#include "glm/matrix.hpp"
-#include "glm/gtc/matrix_transform.hpp"
 
 class Game {
 private:
 	GLFWwindow* window;
+
 	GLenum res;
 	GLuint vbo;
 	GLuint vao;
-	GLuint ebo;
 	GLuint vertexShader;
 	GLuint fragmentShader;
 	GLuint shaderProgram;
-	GLfloat plane_vertices[9];
-	std::vector<unsigned int> plane_verticies_indicies;
+	GLuint geometryShader;
+	unsigned int texture1,texture2;
+	glm::mat4 proj, model, view;
+	glm::vec3 cameraPos, cameraFront, cameraUp; //= glm::vec3(0.0f, 0.0f, 3.0f);
+	//= glm::vec3(0.0f, 0.0f, -1.0f);
+	float lastFrame;
 
+	shaderLoader basicShader;
+	shaderLoader lampShader;
 public:
 	Game();
 	~Game();
@@ -30,8 +39,8 @@ public:
 	void opengl_setup(int width, int height);
 	void error_callback(int error, const char* description);
 	void processInput(GLFWwindow* window);
-	void creating_plane();
 	void game_loop();
+	void planeSetup();
 
 	//Mutator
 	GLFWwindow* getWindow() {
