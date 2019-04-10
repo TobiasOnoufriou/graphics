@@ -204,6 +204,7 @@ void Game::planeSetup() {
 	glEnableVertexAttribArray(0);
 	// texture coord attribute
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 	//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	//glEnableVertexAttribArray(2);
 
@@ -310,15 +311,17 @@ void Game::game_loop() {
 	//model = glm::rotate(model, deltaTime * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 	glUseProgram(basicShader.getShaderProgram());
 	
+	
+	
+	int viewLoc = glGetUniformLocation(basicShader.getShaderProgram(), "view");
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+	
 	glUniform3f(glGetUniformLocation(basicShader.getShaderProgram(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 	glUniform3f(glGetUniformLocation(basicShader.getShaderProgram(), "objectColor"), 1.0f, 0.5f, 0.31f);
 	glUniform3f(glGetUniformLocation(basicShader.getShaderProgram(), "lightColor"), 1.0f, 1.0f, 1.0f);
 	int projLoc = glGetUniformLocation(basicShader.getShaderProgram(), "projection");
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
-	
-	int viewLoc = glGetUniformLocation(basicShader.getShaderProgram(), "view");
-	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-	
+
 	glm::mat4 model = glm::mat4(1.0f);
 	int modelLoc = glGetUniformLocation(basicShader.getShaderProgram(), "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
