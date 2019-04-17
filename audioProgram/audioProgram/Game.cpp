@@ -319,35 +319,42 @@ void Game::game_loop() {
 	GLint loc;
 	//model = glm::rotate(model, deltaTime * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 	glUseProgram(basicShader.getShaderProgram());
-	//Material Shaders
-	glUniform1f(glGetUniformLocation(basicShader.getShaderProgram(), "material.shininess"), 64.0f);
-	
-	//Light
-	glUniform3f(glGetUniformLocation(basicShader.getShaderProgram(), "light.ambient"), 0.2f, 0.2f, 0.2f);
-	glUniform3f(glGetUniformLocation(basicShader.getShaderProgram(), "light.diffuse"), 0.5f, 0.5f, 0.5f);
-	glUniform3f(glGetUniformLocation(basicShader.getShaderProgram(), "light.specular"), 1.0f, 1.0f, 1.0f);
-	glUniform1f(glGetUniformLocation(basicShader.getShaderProgram(), "light.constant"), 1.0f);
-	glUniform1f(glGetUniformLocation(basicShader.getShaderProgram(), "light.linear"), 0.09f);
-	glUniform1f(glGetUniformLocation(basicShader.getShaderProgram(), "light.quadratic"), 0.032f);
-	
-	//Shader 
-	glUniform3f(glGetUniformLocation(basicShader.getShaderProgram(), "light.direction"), -1.0f, -1.0f, -0.3f);
-	glUniform3f(glGetUniformLocation(basicShader.getShaderProgram(), "lightColor"), 1.0f, 1.0f, 1.0f);
-	glUniform3f(glGetUniformLocation(basicShader.getShaderProgram(), "viewPos"), cameraPos.x,cameraPos.y,cameraPos.z);
-	int projLoc = glGetUniformLocation(basicShader.getShaderProgram(), "projection");
-	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
-	int viewLoc = glGetUniformLocation(basicShader.getShaderProgram(), "view");
-	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-	//glm::mat4 model = glm::mat4(1.0f);
-	
-	
-	
 	glUniform1i(glGetUniformLocation(basicShader.getShaderProgram(), "material.diffuse"), 0);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture1);
 	glUniform1i(glGetUniformLocation(basicShader.getShaderProgram(), "material.specular"), 1);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, texture2);
+	//Material Shaders
+	
+	
+	//Light
+
+	glUniform3f(glGetUniformLocation(basicShader.getShaderProgram(), "light.position"), cameraPos.x,cameraPos.y,cameraPos.z);
+	glUniform3f(glGetUniformLocation(basicShader.getShaderProgram(), "light.direction"), cameraFront.x, cameraFront.y, cameraFront.z);
+	glUniform1f(glGetUniformLocation(basicShader.getShaderProgram(), "light.cutOff"), glm::cos(glm::radians(2.5f)));
+	glUniform1f(glGetUniformLocation(basicShader.getShaderProgram(), "light.outerCutOff"), glm::cos(glm::radians(15.0f)));
+	glUniform3f(glGetUniformLocation(basicShader.getShaderProgram(), "viewPos"), cameraPos.x, cameraPos.y, cameraPos.z);
+
+	glUniform3f(glGetUniformLocation(basicShader.getShaderProgram(), "light.ambient"), 0.1f, 0.1f, 0.1f);
+	glUniform3f(glGetUniformLocation(basicShader.getShaderProgram(), "light.diffuse"), 0.8f, 0.8f, 0.8f);
+	glUniform3f(glGetUniformLocation(basicShader.getShaderProgram(), "light.specular"), 1.0f, 1.0f, 1.0f);
+	glUniform1f(glGetUniformLocation(basicShader.getShaderProgram(), "light.constant"), 1.0f);
+	glUniform1f(glGetUniformLocation(basicShader.getShaderProgram(), "light.linear"), 0.09f);
+	glUniform1f(glGetUniformLocation(basicShader.getShaderProgram(), "light.quadratic"), 0.032f);
+	
+	//Shader 
+	//glUniform3f(glGetUniformLocation(basicShader.getShaderProgram(), "lightColor"), 1.0f, 1.0f, 1.0f);
+	
+	int projLoc = glGetUniformLocation(basicShader.getShaderProgram(), "projection");
+	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
+	int viewLoc = glGetUniformLocation(basicShader.getShaderProgram(), "view");
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+	//glm::mat4 model = glm::mat4(1.0f);
+	
+	glUniform1f(glGetUniformLocation(basicShader.getShaderProgram(), "material.shininess"), 32.0f);
+	
+
 
 	glBindVertexArray(cubeVao);
 	for (unsigned int i = 0; i < 10; i++) {
