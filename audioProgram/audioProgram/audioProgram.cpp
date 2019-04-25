@@ -39,10 +39,8 @@ int main()
 	FMOD_VECTOR pos2 = { 10.f * 1.0f, 0.0f, 0.0f };
 	FMOD_VECTOR vel2 = { 1.0f, 0.0f, 0.0f };
 
-	while (!glfwWindowShouldClose(game->getWindow())) {
-		game->game_loop();
-		system->update();
-	}
+	//system->update();
+	
 	game = nullptr;
 	delete game;
 	exit(EXIT_SUCCESS);

@@ -5,9 +5,10 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "shaderLoader.h"
-#include "stb_image.h"
 #include "glad/glad.h"
 #include "glfw/include/GLFW/glfw3.h"
+#include "assimp/include/material.h"
+#include "Model.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -29,9 +30,9 @@ private:
 	glm::vec3 cameraPos, cameraFront, cameraUp; //= glm::vec3(0.0f, 0.0f, 3.0f);
 	//= glm::vec3(0.0f, 0.0f, -1.0f);
 	float lastFrame;
-
 	shaderLoader basicShader;
 	shaderLoader lampShader;
+	shaderLoader modelShader;
 public:
 	Game();
 	~Game();
@@ -39,7 +40,7 @@ public:
 	void opengl_setup(int width, int height);
 	void error_callback(int error, const char* description);
 	void processInput(GLFWwindow* window, float deltaTime);
-	void game_loop();
+	void game_loop(Model test);
 	void planeSetup();
 
 	//Mutator
